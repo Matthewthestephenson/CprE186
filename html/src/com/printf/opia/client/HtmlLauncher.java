@@ -7,13 +7,13 @@ import com.printf.opia.Game;
 
 public class HtmlLauncher extends GwtApplication {
 
-        @Override
-        public GwtApplicationConfiguration getConfig () {
-                return new GwtApplicationConfiguration(1280, 800);
-        }
+    @Override
+    public GwtApplicationConfiguration getConfig () {
+        return new GwtApplicationConfiguration(1280, 800);
+    }
 
-        @Override
-        public ApplicationListener getApplicationListener () {
-                return new Game();
-        }
+    @Override
+    public ApplicationListener getApplicationListener () {
+        return new Game();
+    }
 }
