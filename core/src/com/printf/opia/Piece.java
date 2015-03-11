@@ -10,8 +10,8 @@ public class Piece {
 
     private static enum Color{RED, BLUE, YELLOW, GREEN};
     private static enum Shape{CIRCLE, SQUARE};
-    private Color pieceColor;
-    private Shape pieceShape;
+    protected Color pieceColor;
+    protected Shape pieceShape;
 
     public Piece(){
         Random rand = new Random();

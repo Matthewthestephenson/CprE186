@@ -14,7 +14,7 @@ public class Queue {
         Random rand = new Random();
         queue = new ArrayList<Piece>();
         for(int i = 0; i < queueLength; i++){
-            queue.add(new Piece((i%2) + Logic.playerTurn));
+            queue.add(new Piece((i%2) + Game.gameLogic.playerTurn));
         }
     }
 
@@ -28,7 +28,7 @@ public class Queue {
         }
         Piece temp = queue.get(0);
         queue.remove(0);
-        queue.add(new Piece((queueLength % 2) + ((Logic.playerTurn + 1) % 2)));
+        queue.add(new Piece((queueLength % 2) + ((Game.gameLogic.playerTurn + 1) % 2)));
         return temp;
     }
 }

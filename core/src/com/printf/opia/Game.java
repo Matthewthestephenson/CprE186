@@ -13,72 +13,86 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter implements ApplicationListener, InputProcessor {
-	SpriteBatch batch;
-    Camera gameCamera;
-    Sprite currentPiece;
-    Sprite background;
-	Texture redSquare;
-    Texture blueSquare;
-    Texture redCircle;
-    Texture blueCircle;
-    Texture backgroundTexture;
-    int pieceDimensions;
-    static final int GAME_HEIGHT = 1280;
-    static final int GAME_WIDTH = 800;
+    private SpriteBatch batch;
+    private Camera gameCamera;
+    private Sprite currentPiece;
+    private Sprite background;
+    private Texture redSquare;
+    private Texture blueSquare;
+    private Texture redCircle;
+    private Texture blueCircle;
+    private Texture backgroundTexture;
+    private int pieceDimensions;
+    private static final int GAME_HEIGHT = 1280;
+    private static final int GAME_WIDTH = 800;
     protected static Logic gameLogic;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-        gameCamera = new OrthographicCamera(GAME_WIDTH,GAME_HEIGHT);
-        gameCamera.translate(gameCamera.viewportWidth/2 ,gameCamera.viewportHeight/2, 0);
+    protected static Grid gameGrid;
+    protected static Queue gameQueue;
+
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        gameCamera = new OrthographicCamera(GAME_WIDTH, GAME_HEIGHT);
+        gameCamera.translate(gameCamera.viewportWidth / 2, gameCamera.viewportHeight / 2, 0);
         backgroundTexture = new Texture(Gdx.files.internal("shittyMSPaintPng/background.png"));
-		redSquare = new Texture(Gdx.files.internal("shittyMSPaintPng/redSquare.png"));
+        redSquare = new Texture(Gdx.files.internal("shittyMSPaintPng/redSquare.png"));
         blueSquare = new Texture(Gdx.files.internal("shittyMSPaintPng/blueSquare.png"));
         redCircle = new Texture(Gdx.files.internal("shittyMSPaintPng/redCircle.png"));
         blueCircle = new Texture(Gdx.files.internal("shittyMSPaintPng/blueCircle.png"));
 
         background = new Sprite(backgroundTexture);
-        background.setSize(GAME_WIDTH,GAME_HEIGHT);
+        background.setSize(GAME_WIDTH, GAME_HEIGHT);
         pieceDimensions = GAME_WIDTH / 7;
         currentPiece = new Sprite(redSquare);
-        currentPiece.setSize(pieceDimensions,pieceDimensions);
+        currentPiece.setSize(pieceDimensions, pieceDimensions);
 
         gameLogic = new Logic();
+        gameGrid = new Grid();
+        gameQueue = new Queue();
+
 
         Gdx.input.setInputProcessor(this);
-	}
+    }
 
-	@Override
-	public void render () {
+    @Override
+    public void render() {
         int i = 0;
         int j = 0;
         int counter = 0;
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            gameCamera.translate(-1f,0f,0f);
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            gameCamera.translate(-1f, 0f, 0f);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gameCamera.translate(1f,0f,0f);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            gameCamera.translate(1f, 0f, 0f);
         }
         gameCamera.update();
-		batch.begin();
+        batch.begin();
         batch.setProjectionMatrix(gameCamera.combined);
         background.draw(batch);
-        for(i = 0; i < 6; i++){
-            for(j = 0; j < 7; j++){
-                if(counter % 2 == 0){currentPiece = new Sprite(redCircle);}
-                else{currentPiece = new Sprite(redSquare);}
-                currentPiece.setSize(pieceDimensions,pieceDimensions);
-                currentPiece.setX((j * pieceDimensions));
-                currentPiece.setY(i * pieceDimensions);
-                currentPiece.draw(batch);
-                counter++;
+        for (i = 0; i < 6; i++) {
+            for (j = 0; j < 7; j++) {
+
+                currentPiece = new Sprite(redCircle);
             }
+            currentPiece.setSize(pieceDimensions, pieceDimensions);
+            currentPiece.setX((j * pieceDimensions));
+            currentPiece.setY(i * pieceDimensions);
+            currentPiece.draw(batch);
+            counter++;
         }
-		batch.end();
-	}
+
+        batch.end();
+    }
+
+    private Texture getTexture(Piece piece){
+
+        return null;
+    }
+
+
+
     public void dispose(){
         redCircle.dispose();
         redSquare.dispose();
@@ -127,3 +141,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         return false;
     }
 }
+
+
+
