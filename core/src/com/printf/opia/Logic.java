@@ -7,12 +7,14 @@ public class Logic {
 
     protected static int playerTurn;
     protected static int numColors;
-    private Grid gameGrid;
+    protected static Grid gameGrid;
+    protected static Queue gameQueue;
 
     public Logic(){
         playerTurn = 0;
         numColors = 2;
         gameGrid = new Grid();
+        gameQueue = new Queue();
     }
 
     public int getPlayerTurn(){
@@ -22,9 +24,13 @@ public class Logic {
     public void endTurn() { playerTurn = 1 - playerTurn; }
 
     public int checkColumn(int index){
-        int colIndex = 0;
-
-        return 0;
+        for(int rowIndex = 0; rowIndex < gameGrid.height; rowIndex++){
+            if(gameGrid.getPiece(rowIndex, index) == null){
+                gameGrid.setPiece(gameQueue.usePiece(), rowIndex, index);
+                return rowIndex;
+            }
+        }
+        return -1;
     }
 
 

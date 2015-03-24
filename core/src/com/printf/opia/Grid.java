@@ -5,8 +5,8 @@ package com.printf.opia;
  */
 public class Grid {
 
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
     private Piece[][] gamePieces;
 
     public Grid(){
@@ -27,4 +27,5 @@ public class Grid {
     public void setPiece(Piece piece, int row, int column){
         gamePieces[row][column] = piece;
     }
+
 }
