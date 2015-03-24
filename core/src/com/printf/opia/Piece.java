@@ -23,6 +23,12 @@ public class Piece {
         Random rand = new Random();
         int colorInt = rand.nextInt(Game.gameLogic.numColors);
         pieceColor = generateColor(colorInt);
+        if(playerTurn == 0){
+            pieceShape = Shape.CIRCLE;
+        }
+        else if(playerTurn == 1){
+            pieceShape = Shape.SQUARE;
+        }
     }
 
 

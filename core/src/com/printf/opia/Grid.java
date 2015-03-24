@@ -13,6 +13,11 @@ public class Grid {
         width = 7;
         height = 6;
         gamePieces = new Piece[height][width];
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                gamePieces[i][j] = null;
+            }
+        }
     }
 
     public Piece getPiece(int row, int column){
