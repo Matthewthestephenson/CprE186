@@ -85,7 +85,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             }
         }
         //draw Queue
-        for (i = 0; i < 5; i++){
+        for (i = 0; i < gameLogic.gameQueue.getQueueLength(); i++){
             currentPiece = new Sprite(getTexture(gameLogic.gameQueue.peekPiece(i)));
             currentPiece.setSize(pieceDimensions, pieceDimensions);
             currentPiece.setX(i*pieceDimensions);
