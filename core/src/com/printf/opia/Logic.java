@@ -38,6 +38,7 @@ public class Logic {
                 lastPlacedRow = rowIndex;
                 lastPlacedCol = index;
                 gameGrid.setPiece(lastPlacedPiece, rowIndex, index);
+                checkWin(lastPlacedPiece, lastPlacedRow, lastPlacedCol);
                 endTurn();
                 return rowIndex;
             }
@@ -47,7 +48,30 @@ public class Logic {
 
     // Returns true if the last player has just won the game
     public void checkWin(Piece piece, int row, int column){
-
+        if(checkDown(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkDownLeft(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkDownRight(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkUp(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkUpLeft(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkUpRight(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkLeft(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
+        else if(checkRight(piece, row, column)){
+            winningPlayer = playerTurn;
+        }
     }
 
     private boolean checkDown(Piece piece, int row, int column){
@@ -55,7 +79,9 @@ public class Logic {
             // Check for shape first
             int shapeMatches = 0;
             int colorMatches = 0;
-            for(int checkedRow = row - 1; checkedRow >= row - 3; checkedRow--){
+            int numChecked = 0;
+            int checkedRow = row - 1;
+            while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
@@ -63,6 +89,8 @@ public class Logic {
                 if(checkedPiece.pieceColor == piece.pieceColor){
                     colorMatches++;
                 }
+                numChecked++;
+                checkedRow --;
             }
             if((shapeMatches == 3) || (colorMatches == 3)){
                 return true;
@@ -72,30 +100,181 @@ public class Logic {
     }
 
     private boolean checkDownLeft(Piece piece, int row, int column){
+        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) >= 4){
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int checkedRow = row - 1;
+            int checkedCol = column - 1;
+            int numChecked = 0;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedRow--;
+                checkedCol--;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkDownRight(Piece piece, int row, int column){
+        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) <= 4){
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int checkedRow = row - 1;
+            int checkedCol = column + 1;
+            int numChecked = 0;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedRow--;
+                checkedCol++;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkLeft(Piece piece, int row, int column){
+        if((gameGrid.width - column) >= 4){
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int checkedCol = column - 1;
+            int numChecked = 0;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedCol--;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkRight(Piece piece, int row, int column){
+        if((gameGrid.width - column) <= 4){
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int checkedCol = column + 1;
+            int numChecked = 0;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedCol++;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkUp(Piece piece, int row, int column){
+        if((gameGrid.height - row) >= 4){
+            // Check for shape first
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int numChecked = 0;
+            int checkedRow = row + 1;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedRow++;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkUpLeft(Piece piece, int row, int column){
+        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) >= 4){
+            // Check for shape first
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int numChecked = 0;
+            int checkedRow = row + 1;
+            int checkedCol = column - 1;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedRow++;
+                checkedCol--;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 
     private boolean checkUpRight(Piece piece, int row, int column){
+        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) <= 4){
+            // Check for shape first
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            int numChecked = 0;
+            int checkedRow = row + 1;
+            int checkedCol = column + 1;
+            while(numChecked < 4){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+                numChecked++;
+                checkedRow++;
+                checkedCol++;
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 }
