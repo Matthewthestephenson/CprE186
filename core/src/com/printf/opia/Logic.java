@@ -51,6 +51,23 @@ public class Logic {
     }
 
     private boolean checkDown(Piece piece, int row, int column){
+        if((gameGrid.height - row) <= 3){
+            // Check for shape first
+            int shapeMatches = 0;
+            int colorMatches = 0;
+            for(int checkedRow = row - 1; checkedRow >= row - 3; checkedRow--){
+                Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
+                if(checkedPiece.pieceShape == piece.pieceShape){
+                    shapeMatches++;
+                }
+                if(checkedPiece.pieceColor == piece.pieceColor){
+                    colorMatches++;
+                }
+            }
+            if((shapeMatches == 3) || (colorMatches == 3)){
+                return true;
+            }
+        }
         return false;
     }
 

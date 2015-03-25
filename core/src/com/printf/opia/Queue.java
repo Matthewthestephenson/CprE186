@@ -31,4 +31,8 @@ public class Queue {
         queue.add(new Piece((queueLength % 2) + ((Game.gameLogic.playerTurn + 1) % 2) - 1));
         return temp;
     }
+
+    public int getQueueLength(){
+        return queueLength;
+    }
 }
