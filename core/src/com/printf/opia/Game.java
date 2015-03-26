@@ -69,7 +69,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         for (i = 0; i < 6; i++) {
             for (j = 0; j < 7; j++) {
                 //TODO set currentPiece texture using getTexture method
-                currentPiece = new Sprite(getTexture(gameLogic.gameGrid.getPiece(j, i)));
+                currentPiece = new Sprite(getTexture(gameLogic.gameGrid.getPiece(i, j)));
                 currentPiece.setSize(pieceDimensions, pieceDimensions);
                 currentPiece.setX((j * pieceDimensions));
                 currentPiece.setY(i * pieceDimensions);
@@ -132,10 +132,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.LEFT){
-            gameLogic.checkColumn(decideColumn(Gdx.input.getX()));
-        }
-        return false;
+       return false;
     }
 
     @Override
@@ -152,6 +149,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
         gameLogic.checkColumn(decideColumn(touchX));
+        System.out.println(decideColumn(touchX));
         return true;
     }
 

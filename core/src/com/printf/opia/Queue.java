@@ -28,7 +28,7 @@ public class Queue {
         }
         Piece temp = queue.get(0);
         queue.remove(0);
-        queue.add(new Piece((queueLength % 2) + ((Game.gameLogic.playerTurn + 1) % 2)));
+        queue.add(new Piece((queueLength % 2) + ((Game.gameLogic.playerTurn + 1) % 2) - 1));
         return temp;
     }
 }
