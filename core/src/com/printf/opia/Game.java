@@ -68,7 +68,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
         for (i = 0; i < 6; i++) {
             for (j = 0; j < 7; j++) {
-                //TODO set currentPiece texture using getTexture method
+
                 currentPiece = new Sprite(getTexture(gameLogic.gameGrid.getPiece(i, j)));
                 currentPiece.setSize(pieceDimensions, pieceDimensions);
                 currentPiece.setX((j * pieceDimensions));
@@ -88,7 +88,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     }
 
     public  Texture getTexture(Piece piece){
-        //TODO how to get texture using enumerated types declared in piece class
+
        if(piece == null){
            return backgroundTexture;
        }
