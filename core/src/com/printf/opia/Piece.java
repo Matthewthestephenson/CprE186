@@ -8,20 +8,21 @@ import java.util.Random;
  */
 public class Piece {
 
-    private static enum Color{RED, BLUE, YELLOW, GREEN};
-    private static enum Shape{CIRCLE, SQUARE};
+    protected static enum Color{RED, BLUE, YELLOW, GREEN};
+    protected static enum Shape{CIRCLE, SQUARE};
     protected Color pieceColor;
     protected Shape pieceShape;
+    //TODO add a boolean to see if the piece is currently drawable?
 
     public Piece(){
         Random rand = new Random();
-        int colorInt = rand.nextInt(Game.gameLogic.numColors);
+        int colorInt = rand.nextInt(Game.gameLogic.numColors) + 1;
         pieceColor = generateColor(colorInt);
     }
 
     public Piece(int playerTurn){
         Random rand = new Random();
-        int colorInt = rand.nextInt(Game.gameLogic.numColors);
+        int colorInt = rand.nextInt(Game.gameLogic.numColors) + 1;
         pieceColor = generateColor(colorInt);
         if(playerTurn == 0){
             pieceShape = Shape.CIRCLE;

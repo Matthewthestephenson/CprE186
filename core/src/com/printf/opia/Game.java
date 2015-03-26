@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+
+
 public class Game extends ApplicationAdapter implements ApplicationListener, InputProcessor {
     private SpriteBatch batch;
     private Camera gameCamera;
@@ -43,13 +45,11 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
         pieceDimensions = GAME_WIDTH / 7;
-        currentPiece = new Sprite(redSquare);
+        currentPiece = new Sprite();
         currentPiece.setSize(pieceDimensions, pieceDimensions);
 
         gameLogic = new Logic();
-        gameGrid = new Grid();
         gameQueue = new Queue();
-
 
         Gdx.input.setInputProcessor(this);
     }
@@ -61,34 +61,63 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         int counter = 0;
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            gameCamera.translate(-1f, 0f, 0f);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gameCamera.translate(1f, 0f, 0f);
-        }
         gameCamera.update();
         batch.begin();
         batch.setProjectionMatrix(gameCamera.combined);
         background.draw(batch);
+
         for (i = 0; i < 6; i++) {
             for (j = 0; j < 7; j++) {
-
-                currentPiece = new Sprite(redCircle);
+                //TODO set currentPiece texture using getTexture method
+                currentPiece = new Sprite(getTexture(gameLogic.gameGrid.getPiece(j, i)));
+                currentPiece.setSize(pieceDimensions, pieceDimensions);
+                currentPiece.setX((j * pieceDimensions));
+                currentPiece.setY(i * pieceDimensions);
+                currentPiece.draw(batch);
             }
+        }
+        for (i = 0; i < 5; i++){
+            currentPiece = new Sprite(getTexture(gameLogic.gameQueue.peekPiece(i)));
             currentPiece.setSize(pieceDimensions, pieceDimensions);
-            currentPiece.setX((j * pieceDimensions));
-            currentPiece.setY(i * pieceDimensions);
+            currentPiece.setX(i*pieceDimensions);
+            currentPiece.setY(GAME_HEIGHT - pieceDimensions * 2);
             currentPiece.draw(batch);
-            counter++;
         }
 
         batch.end();
     }
 
-    private Texture getTexture(Piece piece){
+    public  Texture getTexture(Piece piece){
+        //TODO how to get texture using enumerated types declared in piece class
+       if(piece == null){
+           return backgroundTexture;
+       }
+        switch(piece.pieceShape){
+           case SQUARE:
+                switch(piece.pieceColor){
+                    case BLUE:
+                        return blueSquare;
 
-        return null;
+                    case RED:
+                        return redSquare;
+
+                }
+                break;
+           case CIRCLE:
+               switch(piece.pieceColor){
+                   case BLUE:
+                       return blueCircle;
+
+                   case RED:
+                       return redCircle;
+
+               }
+               break;
+            default:
+                return backgroundTexture;
+
+        }
+        return backgroundTexture;
     }
 
 
@@ -103,6 +132,9 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.LEFT){
+            gameLogic.checkColumn(decideColumn(Gdx.input.getX()));
+        }
         return false;
     }
 
@@ -118,7 +150,9 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        int touchX = screenX;
+        gameLogic.checkColumn(decideColumn(touchX));
+        return true;
     }
 
     @Override
@@ -133,6 +167,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+
         return false;
     }
 
@@ -140,6 +175,32 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     public boolean scrolled(int amount) {
         return false;
     }
+    public int decideColumn(int touchX){
+        //Game width needs to be changed to grid width whatever that is.
+        System.out.println("TouchX = " + touchX);
+        if(touchX >= GAME_WIDTH * (6.0/7.0)){
+            return 6;
+        }
+        else if(touchX >= GAME_WIDTH * (5.0/7.0)){
+            return 5;
+        }
+        else if(touchX >= GAME_WIDTH * (4.0/7.0)){
+            return 4;
+        }
+        else if(touchX >= GAME_WIDTH * (3.0/7.0)){
+            return 3;
+        }
+        else if(touchX >= GAME_WIDTH * (2.0/7.0)){
+            return 2;
+        }
+        else if(touchX >= GAME_WIDTH * (1.0/7.0)){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
 }
 
 
