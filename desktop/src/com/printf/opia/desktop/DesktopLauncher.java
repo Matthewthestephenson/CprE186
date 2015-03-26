@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "Opia";
-        config.width = 800;
-        config.height = 1280;
+        config.width = 400;
+        config.height = 640;
 		new LwjglApplication(new Game(), config);
 	}
 }

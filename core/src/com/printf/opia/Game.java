@@ -21,36 +21,44 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Sprite background;
     private Texture redSquare;
     private Texture blueSquare;
+    private Texture greenSquare;
     private Texture redCircle;
     private Texture blueCircle;
+    private Texture greenCircle;
     private Texture backgroundTexture;
-    private int pieceDimensions;
-    private static final int GAME_HEIGHT = 1280;
-    private static final int GAME_WIDTH = 800;
+    private float pieceDimensions;
+    private static float GAME_HEIGHT;
+    private static float GAME_WIDTH;
     protected static Logic gameLogic;
-    protected static Grid gameGrid;
     protected static Queue gameQueue;
 
     @Override
     public void create() {
+        //Setup GameNumbers
+        GAME_WIDTH = Gdx.graphics.getWidth();
+        GAME_HEIGHT = Gdx.graphics.getHeight();
+        pieceDimensions = GAME_WIDTH / 7;
+        //Setup SpriteBatch
         batch = new SpriteBatch();
+        //Setup Camera
         gameCamera = new OrthographicCamera(GAME_WIDTH, GAME_HEIGHT);
         gameCamera.translate(gameCamera.viewportWidth / 2, gameCamera.viewportHeight / 2, 0);
+        //Load Textures
         backgroundTexture = new Texture(Gdx.files.internal("shittyMSPaintPng/background.png"));
-        redSquare = new Texture(Gdx.files.internal("shittyMSPaintPng/redSquare.png"));
-        blueSquare = new Texture(Gdx.files.internal("shittyMSPaintPng/blueSquare.png"));
-        redCircle = new Texture(Gdx.files.internal("shittyMSPaintPng/redCircle.png"));
-        blueCircle = new Texture(Gdx.files.internal("shittyMSPaintPng/blueCircle.png"));
-
+        redSquare = new Texture(Gdx.files.internal("demoImages/squareRed.png"));
+        blueSquare = new Texture(Gdx.files.internal("demoImages/squareBlue.png"));
+        greenSquare = new Texture(Gdx.files.internal("demoImages/squareGreen.png"));
+        redCircle = new Texture(Gdx.files.internal("demoImages/circleRed.png"));
+        blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
+        greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
+        //Setup Sprites
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
-        pieceDimensions = GAME_WIDTH / 7;
         currentPiece = new Sprite();
         currentPiece.setSize(pieceDimensions, pieceDimensions);
-
+        //init logic object
         gameLogic = new Logic();
-        gameQueue = new Queue();
-
+        //Input
         Gdx.input.setInputProcessor(this);
     }
 
@@ -64,11 +72,11 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         gameCamera.update();
         batch.begin();
         batch.setProjectionMatrix(gameCamera.combined);
+        //draw Background
         background.draw(batch);
-
+        //draw grid
         for (i = 0; i < 6; i++) {
             for (j = 0; j < 7; j++) {
-
                 currentPiece = new Sprite(getTexture(gameLogic.gameGrid.getPiece(i, j)));
                 currentPiece.setSize(pieceDimensions, pieceDimensions);
                 currentPiece.setX((j * pieceDimensions));
@@ -76,6 +84,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                 currentPiece.draw(batch);
             }
         }
+        //draw Queue
         for (i = 0; i < 5; i++){
             currentPiece = new Sprite(getTexture(gameLogic.gameQueue.peekPiece(i)));
             currentPiece.setSize(pieceDimensions, pieceDimensions);
@@ -88,7 +97,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     }
 
     public  Texture getTexture(Piece piece){
-
        if(piece == null){
            return backgroundTexture;
        }
@@ -97,25 +105,24 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                 switch(piece.pieceColor){
                     case BLUE:
                         return blueSquare;
-
                     case RED:
                         return redSquare;
-
+                    case GREEN:
+                        return greenSquare;
                 }
                 break;
            case CIRCLE:
                switch(piece.pieceColor){
                    case BLUE:
                        return blueCircle;
-
                    case RED:
                        return redCircle;
-
+                   case GREEN:
+                       return greenCircle;
                }
                break;
             default:
                 return backgroundTexture;
-
         }
         return backgroundTexture;
     }
@@ -124,8 +131,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     public void dispose(){
         redCircle.dispose();
-        redSquare.dispose();
         blueCircle.dispose();
+        greenCircle.dispose();
+        redSquare.dispose();
+        greenSquare.dispose();
         blueSquare.dispose();
         backgroundTexture.dispose();
     }
@@ -148,8 +157,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
-        gameLogic.checkColumn(decideColumn(touchX));
-        System.out.println(decideColumn(touchX));
+        if(decideColumn(touchX) != -1) {
+            gameLogic.checkColumn(decideColumn(screenX));
+            System.out.println(decideColumn(touchX));
+        }
         return true;
     }
 
@@ -176,30 +187,25 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     public int decideColumn(int touchX){
         //Game width needs to be changed to grid width whatever that is.
         System.out.println("TouchX = " + touchX);
-        if(touchX >= GAME_WIDTH * (6.0/7.0)){
-            return 6;
-        }
-        else if(touchX >= GAME_WIDTH * (5.0/7.0)){
-            return 5;
-        }
-        else if(touchX >= GAME_WIDTH * (4.0/7.0)){
-            return 4;
-        }
-        else if(touchX >= GAME_WIDTH * (3.0/7.0)){
-            return 3;
-        }
-        else if(touchX >= GAME_WIDTH * (2.0/7.0)){
-            return 2;
-        }
-        else if(touchX >= GAME_WIDTH * (1.0/7.0)){
-            return 1;
-        }
-        else {
-            return 0;
+
+            if (touchX >= GAME_WIDTH * (6.0 / 7.0)) {
+                return 6;
+            } else if (touchX >= GAME_WIDTH * (5.0 / 7.0)) {
+                return 5;
+            } else if (touchX >= GAME_WIDTH * (4.0 / 7.0)) {
+                return 4;
+            } else if (touchX >= GAME_WIDTH * (3.0 / 7.0)) {
+                return 3;
+            } else if (touchX >= GAME_WIDTH * (2.0 / 7.0)) {
+                return 2;
+            } else if (touchX >= GAME_WIDTH * (1.0 / 7.0)) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
 
-}
 
 
 

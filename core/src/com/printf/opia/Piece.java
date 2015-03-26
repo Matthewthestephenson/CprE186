@@ -12,7 +12,7 @@ public class Piece {
     protected static enum Shape{CIRCLE, SQUARE};
     protected Color pieceColor;
     protected Shape pieceShape;
-    //TODO add a boolean to see if the piece is currently drawable?
+
 
     public Piece(){
         Random rand = new Random();
@@ -40,9 +40,9 @@ public class Piece {
             case 2:
                 return Color.BLUE;
             case 3:
-                return Color.YELLOW;
-            case 4:
                 return Color.GREEN;
+            case 4:
+                return Color.YELLOW;
         }
         return null;
     }

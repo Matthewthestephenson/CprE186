@@ -16,7 +16,7 @@ public class Logic {
 
     public Logic(){
         playerTurn = 0;
-        numColors = 2;
+        numColors = 3;
         gameGrid = new Grid();
         gameQueue = new Queue();
         lastPlacedPiece = null;
