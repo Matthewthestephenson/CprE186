@@ -46,7 +46,7 @@ public class Logic {
         return -1;
     }
 
-    public boolean checkFull(){
+    public static boolean checkFull(){
         for(int colIndex = 0; colIndex < gameGrid.width; colIndex++){
             for(int rowIndex = 0; rowIndex < gameGrid.height; rowIndex++){
                 if(gameGrid.getPiece(rowIndex, colIndex) == null){
