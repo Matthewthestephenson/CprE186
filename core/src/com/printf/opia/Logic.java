@@ -106,6 +106,8 @@ public class Logic {
         lastPlacedRow = -1;
         lastPlacedCol = -1;
         winningPlayer = -1;
+
+        return;
     }
 
     private boolean checkDown(Piece piece, int row, int column){
