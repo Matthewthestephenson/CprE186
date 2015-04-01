@@ -46,6 +46,29 @@ public class Logic {
         return -1;
     }
 
+    public boolean checkFull(){
+        for(int colIndex = 0; colIndex < gameGrid.width; colIndex++){
+            for(int rowIndex = 0; rowIndex < gameGrid.height; rowIndex++){
+                if(gameGrid.getPiece(rowIndex, colIndex) == null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void reset(){
+        playerTurn = 0;
+        gameGrid = new Grid();
+        gameQueue = new Queue();
+        lastPlacedPiece = null;
+        lastPlacedRow = -1;
+        lastPlacedCol = -1;
+        winningPlayer = -1;
+
+        return;
+    }
+
     // Returns true if the last player has just won the game
     public void checkWin(Piece piece, int row, int column){
         if(checkDown(piece, row, column)){
@@ -72,6 +95,17 @@ public class Logic {
         else if(checkRight(piece, row, column)){
             winningPlayer = playerTurn;
         }
+    }
+
+    public void nextRound(){
+        playerTurn = 0;
+        numColors++;
+        gameGrid = new Grid();
+        gameQueue = new Queue();
+        lastPlacedPiece = null;
+        lastPlacedRow = -1;
+        lastPlacedCol = -1;
+        winningPlayer = -1;
     }
 
     private boolean checkDown(Piece piece, int row, int column){
