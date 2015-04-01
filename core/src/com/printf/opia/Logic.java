@@ -83,6 +83,9 @@ public class Logic {
             int checkedRow = row - 1;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -108,6 +111,9 @@ public class Logic {
             int numChecked = 0;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -134,6 +140,9 @@ public class Logic {
             int numChecked = 0;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -159,6 +168,9 @@ public class Logic {
             int numChecked = 0;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -183,6 +195,9 @@ public class Logic {
             int numChecked = 0;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -208,6 +223,9 @@ public class Logic {
             int checkedRow = row + 1;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -234,6 +252,9 @@ public class Logic {
             int checkedCol = column - 1;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
@@ -261,6 +282,9 @@ public class Logic {
             int checkedCol = column + 1;
             while(numChecked < 4){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
+                if(checkedPiece == null){
+                    break;
+                }
                 if(checkedPiece.pieceShape == piece.pieceShape){
                     shapeMatches++;
                 }
