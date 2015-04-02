@@ -212,6 +212,17 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         }
         return -1;
     }
+    public int decideRow(int touchY){
+        int i = 0;
+        if(touchY >= gridY && touchY <= (gridY + gridHeight)){
+            for(i = 5; i >= 0; i--){
+                if(touchY >= i*pieceHeight + gridY){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 }
 
 

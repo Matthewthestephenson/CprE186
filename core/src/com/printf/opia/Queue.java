@@ -7,7 +7,7 @@ import java.util.Random;
  * Created by Joe on 3/10/2015.
  */
 public class Queue {
-    private int queueLength = 5;
+    private int queueLength = 3;
     private ArrayList<Piece> queue;
 
     public Queue(){
