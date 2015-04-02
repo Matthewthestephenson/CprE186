@@ -81,7 +81,7 @@ public class Logic {
             int colorMatches = 0;
             int numChecked = 0;
             int checkedRow = row - 1;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
                 if(checkedPiece == null){
                     break;
@@ -103,13 +103,13 @@ public class Logic {
     }
 
     private boolean checkDownLeft(Piece piece, int row, int column){
-        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) >= 4){
+        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) <= 4){
             int shapeMatches = 0;
             int colorMatches = 0;
             int checkedRow = row - 1;
             int checkedCol = column - 1;
             int numChecked = 0;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
                 if(checkedPiece == null){
                     break;
@@ -132,13 +132,13 @@ public class Logic {
     }
 
     private boolean checkDownRight(Piece piece, int row, int column){
-        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) <= 4){
+        if((gameGrid.height - row) <= 3 && (gameGrid.width - column) >= 4){
             int shapeMatches = 0;
             int colorMatches = 0;
             int checkedRow = row - 1;
             int checkedCol = column + 1;
             int numChecked = 0;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
                 if(checkedPiece == null){
                     break;
@@ -161,12 +161,12 @@ public class Logic {
     }
 
     private boolean checkLeft(Piece piece, int row, int column){
-        if((gameGrid.width - column) >= 4){
+        if((gameGrid.width - column) <= 4){
             int shapeMatches = 0;
             int colorMatches = 0;
             int checkedCol = column - 1;
             int numChecked = 0;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
                 if(checkedPiece == null){
                     break;
@@ -188,12 +188,12 @@ public class Logic {
     }
 
     private boolean checkRight(Piece piece, int row, int column){
-        if((gameGrid.width - column) <= 4){
+        if((gameGrid.width - column) >= 4){
             int shapeMatches = 0;
             int colorMatches = 0;
             int checkedCol = column + 1;
             int numChecked = 0;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(row, checkedCol);
                 if(checkedPiece == null){
                     break;
@@ -221,7 +221,7 @@ public class Logic {
             int colorMatches = 0;
             int numChecked = 0;
             int checkedRow = row + 1;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, column);
                 if(checkedPiece == null){
                     break;
@@ -243,14 +243,14 @@ public class Logic {
     }
 
     private boolean checkUpLeft(Piece piece, int row, int column){
-        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) >= 4){
+        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) <= 4){
             // Check for shape first
             int shapeMatches = 0;
             int colorMatches = 0;
             int numChecked = 0;
             int checkedRow = row + 1;
             int checkedCol = column - 1;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
                 if(checkedPiece == null){
                     break;
@@ -273,14 +273,14 @@ public class Logic {
     }
 
     private boolean checkUpRight(Piece piece, int row, int column){
-        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) <= 4){
+        if((gameGrid.height - row) >= 4 && (gameGrid.width - column) >= 4){
             // Check for shape first
             int shapeMatches = 0;
             int colorMatches = 0;
             int numChecked = 0;
             int checkedRow = row + 1;
             int checkedCol = column + 1;
-            while(numChecked < 4){
+            while(numChecked < 3){
                 Piece checkedPiece = gameGrid.getPiece(checkedRow, checkedCol);
                 if(checkedPiece == null){
                     break;

@@ -110,6 +110,9 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
+        if(gameLogic.winningPlayer != -1){
+            //TODO display winning player
+        }
         batch.end();
     }
 
