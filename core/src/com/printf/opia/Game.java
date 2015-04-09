@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Game extends ApplicationAdapter implements ApplicationListener, InputProcessor {
     private SpriteBatch batch;
     private Camera gameCamera;
+    private Sprite winner;
     private Sprite currentPiece;
     private Sprite background;
     private Texture redSquare;
@@ -26,6 +27,8 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Texture blueCircle;
     private Texture greenCircle;
     private Texture backgroundTexture;
+    private Texture winOne;
+    private Texture winTwo;
     private float pieceWidth;
     private float pieceHeight;
     private float queueX;
@@ -63,6 +66,8 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         gameCamera.translate(gameCamera.viewportWidth / 2, gameCamera.viewportHeight / 2, 0);
         //Load Textures
         backgroundTexture = new Texture(Gdx.files.internal("demoImages/gamescreen.png"));
+        winOne = new Texture(Gdx.files.internal("demoImages/player1Win.png"));
+        winTwo = new Texture(Gdx.files.internal("demoImages/player2Win.png"));
         redSquare = new Texture(Gdx.files.internal("demoImages/squareRed.png"));
         blueSquare = new Texture(Gdx.files.internal("demoImages/squareBlue.png"));
         greenSquare = new Texture(Gdx.files.internal("demoImages/squareGreen.png"));
@@ -73,6 +78,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
         currentPiece = new Sprite();
+        winner = new Sprite();
         //init logic object
         gameLogic = new Logic();
         //Input
@@ -81,6 +87,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public void render() {
+        //TODO add select animation
         int i = 0;
         int j = 0;
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -110,8 +117,20 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
+        //if Someone Won
         if(gameLogic.winningPlayer != -1){
-            //TODO display winning player
+           if(gameLogic.winningPlayer == 0) {
+               winner = new Sprite(winOne);
+               winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
+               winner.setY(GAME_HEIGHT / 4);
+               winner.draw(batch);
+           }
+            else{
+               winner = new Sprite(winTwo);
+               winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
+               winner.setY(GAME_HEIGHT / 4);
+               winner.draw(batch);
+           }
         }
         batch.end();
     }
@@ -177,9 +196,14 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
         int touchY = screenY;
-        if (decideColumn(touchX) != -1) {
+        System.out.println(screenX + " " + screenY);
+        if (decideColumn(touchX) != -1 && gameLogic.winningPlayer == -1) {
             gameLogic.checkColumn(decideColumn(screenX));
         }
+        if((touchX >= 290) &&(touchX <=300) && (touchY <= 32) && (touchY >= 24)){
+            gameLogic.reset();
+        }
+
         return true;
     }
 
@@ -209,6 +233,17 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         if (touchX >= gridX && touchX <= (gridX + gridWidth)) {
             for(i = 6; i >= 0; i--){
                 if(touchX >= (i*pieceWidth) + gridX){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+    public int decideRow(int touchY){
+        int i = 0;
+        if(touchY >= gridY && touchY <= (gridY + gridHeight)){
+            for(i = 6; i >= 0; i--){
+                if(touchY >= (i*pieceWidth)+gridY){
                     return i;
                 }
             }
