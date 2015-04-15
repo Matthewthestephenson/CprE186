@@ -13,9 +13,13 @@ public class Logic {
     private int lastPlacedRow;
     private int lastPlacedCol;
     protected static int winningPlayer;
+    protected static int player1score;
+    protected static int player2score;
 
     public Logic(){
         playerTurn = 0;
+        player1score = 0;
+        player2score = 0;
         numColors = 3;
         gameGrid = new Grid();
         gameQueue = new Queue();
