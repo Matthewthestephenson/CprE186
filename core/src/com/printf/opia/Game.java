@@ -10,9 +10,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 
@@ -34,6 +37,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Texture backgroundTexture;
     private Texture winOne;
     private Texture winTwo;
+    private TextureAtlas slideAtlas;
+    private TextureRegion[] slideFrames;
+    private TextureRegion currentSlide;
+    private Animation slideAnimation;
     private BitmapFont font;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
@@ -47,6 +54,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private float gridHeightRatio;
     private float gridY;
     private float gridX;
+    private float time;
     private static float GAME_HEIGHT;
     private static float GAME_WIDTH;
     protected static Logic gameLogic;
@@ -82,12 +90,26 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         redCircle = new Texture(Gdx.files.internal("demoImages/circleRed.png"));
         blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
         greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
+        //Load special animation TEXTURE
+        slideAtlas = new TextureAtlas(Gdx.files.internal("demoImages/transition.atlas"));
+        slideFrames = new TextureRegion[5*2];
+        slideFrames[0] = slideAtlas.findRegion("it1");
+        slideFrames[1] = slideAtlas.findRegion("it2");
+        slideFrames[2] = slideAtlas.findRegion("it3");
+        slideFrames[3] = slideAtlas.findRegion("it4");
+        slideFrames[4] = slideAtlas.findRegion("it5");
+        slideFrames[5] = slideAtlas.findRegion("it6");
+        slideFrames[6] = slideAtlas.findRegion("it7");
+        slideFrames[7] = slideAtlas.findRegion("it8");
+        slideFrames[8] = slideAtlas.findRegion("it9");
+        slideFrames[9] = slideAtlas.findRegion("it10");
+        slideAnimation = new Animation(0.08f, slideFrames);
         //FONT
-        /*generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 15;
+        parameter.size = 22;
         font = generator.generateFont(parameter);
-        font.setColor(Color.RED);*/
+        font.setColor(Color.valueOf("ef6e6e"));
         //Setup Sprites
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -97,6 +119,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         gameLogic = new Logic();
         //Input
         Gdx.input.setInputProcessor(this);
+        time = 0f;
     }
 
     @Override
@@ -131,8 +154,13 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
+        //TEST ANIMATION
+        time += Gdx.graphics.getDeltaTime();
+        currentSlide = slideAnimation.getKeyFrame(time,true);
+       // batch.draw(currentSlide, GAME_WIDTH/2, GAME_HEIGHT/2);
         //Draw Score
-       // font.draw(batch, "TEST", GAME_WIDTH/2, GAME_HEIGHT/2);
+        font.draw(batch,"0",(float)(GAME_WIDTH*(1.0/8.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
+        font.draw(batch,"0",(float)(GAME_WIDTH*(51.0/80.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
         //if Someone Won
         if(gameLogic.winningPlayer != -1) {
             if (gameLogic.winningPlayer == 0) {
@@ -193,7 +221,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         winOne.dispose();
         winTwo.dispose();
         backgroundTexture.dispose();
-      //  generator.dispose();
+        generator.dispose();
         font.dispose();
 
     }
