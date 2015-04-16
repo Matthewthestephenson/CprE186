@@ -6,15 +6,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 
 
 public class Game extends ApplicationAdapter implements ApplicationListener, InputProcessor {
+
+
     private SpriteBatch batch;
     private Camera gameCamera;
     private Sprite winner;
@@ -29,6 +34,9 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Texture backgroundTexture;
     private Texture winOne;
     private Texture winTwo;
+    private BitmapFont font;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private float pieceWidth;
     private float pieceHeight;
     private float queueX;
@@ -74,6 +82,12 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         redCircle = new Texture(Gdx.files.internal("demoImages/circleRed.png"));
         blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
         greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
+        //FONT
+        /*generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 15;
+        font = generator.generateFont(parameter);
+        font.setColor(Color.RED);*/
         //Setup Sprites
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -117,21 +131,23 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
+        //Draw Score
+       // font.draw(batch, "TEST", GAME_WIDTH/2, GAME_HEIGHT/2);
         //if Someone Won
-        if(gameLogic.winningPlayer != -1){
-           if(gameLogic.winningPlayer == 0) {
-               winner = new Sprite(winOne);
-               winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
-               winner.setY(GAME_HEIGHT / 4);
-               winner.draw(batch);
-           }
-            else{
-               winner = new Sprite(winTwo);
-               winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
-               winner.setY(GAME_HEIGHT / 4);
-               winner.draw(batch);
-           }
+        if(gameLogic.winningPlayer != -1) {
+            if (gameLogic.winningPlayer == 0) {
+                winner = new Sprite(winOne);
+                winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
+                winner.setY(GAME_HEIGHT / 4);
+                winner.draw(batch);
+            } else {
+                winner = new Sprite(winTwo);
+                winner.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
+                winner.setY(GAME_HEIGHT / 4);
+                winner.draw(batch);
+            }
         }
+
         batch.end();
     }
 
@@ -174,7 +190,12 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         redSquare.dispose();
         greenSquare.dispose();
         blueSquare.dispose();
+        winOne.dispose();
+        winTwo.dispose();
         backgroundTexture.dispose();
+      //  generator.dispose();
+        font.dispose();
+
     }
 
     @Override
@@ -200,7 +221,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         if (decideColumn(touchX) != -1 && gameLogic.winningPlayer == -1) {
             gameLogic.checkColumn(decideColumn(screenX));
         }
-        if((touchX >= 290) &&(touchX <=300) && (touchY <= 32) && (touchY >= 24)){
+        if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) && (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
             gameLogic.reset();
         }
 
