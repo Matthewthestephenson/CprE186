@@ -42,7 +42,7 @@ public class Logic {
                 lastPlacedRow = rowIndex;
                 lastPlacedCol = index;
                 gameGrid.setPiece(lastPlacedPiece, rowIndex, index);
-                checkWin(lastPlacedPiece, lastPlacedRow, lastPlacedCol);
+                checkWin();
                 endTurn();
                 return rowIndex;
             }
@@ -87,30 +87,30 @@ public class Logic {
     }
 
     // Returns true if the last player has just won the game
-    public void checkWin(Piece piece, int row, int column){
-        if(checkDown(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkDownLeft(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkDownRight(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkUp(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkUpLeft(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkUpRight(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkLeft(piece, row, column)){
-            winningPlayer = playerTurn;
-        }
-        else if(checkRight(piece, row, column)){
-            winningPlayer = playerTurn;
+    public void checkWin(){
+        for(int colIndex = 0; colIndex < gameGrid.width; colIndex++){
+            for(int rowIndex = 0; rowIndex < gameGrid.height; rowIndex++) {
+                Piece piece = gameGrid.getPiece(rowIndex, colIndex);
+                if(piece != null){
+                    if (checkDown(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkDownLeft(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkDownRight(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkUp(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkUpLeft(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkUpRight(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkLeft(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    } else if (checkRight(piece, rowIndex, colIndex)) {
+                        winningPlayer = playerTurn;
+                    }
+                }
+            }
         }
     }
 
