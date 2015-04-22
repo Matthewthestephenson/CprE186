@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -80,11 +81,11 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
         greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
         //FONT
-        /*generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 15;
+        parameter.size = 22;
         font = generator.generateFont(parameter);
-        font.setColor(Color.RED);*/
+        font.setColor(Color.valueOf("ef6e6e"));
         //Setup Sprites
         background = new Sprite(backgroundTexture);
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -94,6 +95,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         gameLogic = new Logic();
         //Input
         Gdx.input.setInputProcessor(this);
+        Gdx.graphics.setContinuousRendering(false);
     }
 
     @Override
@@ -128,8 +130,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
+
         //Draw Score
-       // font.draw(batch, "TEST", GAME_WIDTH/2, GAME_HEIGHT/2);
+        font.draw(batch,"" + gameLogic.player1score,(float)(GAME_WIDTH*(1.0/8.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
+        font.draw(batch,"" + gameLogic.player2score,(float)(GAME_WIDTH*(51.0/80.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
         //if Someone Won
         if(gameLogic.winningPlayer != -1) {
             if (gameLogic.winningPlayer == 0) {
@@ -143,6 +147,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                 winner.setY(GAME_HEIGHT / 4);
                 winner.draw(batch);
             }
+
         }
 
         batch.end();
@@ -190,7 +195,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         winOne.dispose();
         winTwo.dispose();
         backgroundTexture.dispose();
-      //  generator.dispose();
+        generator.dispose();
         font.dispose();
 
     }
@@ -212,22 +217,27 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
         int touchY = screenY;
         System.out.println(screenX + " " + screenY);
         if (decideColumn(touchX) != -1 && gameLogic.winningPlayer == -1) {
             gameLogic.checkColumn(decideColumn(screenX));
         }
-        if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) && (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
-            gameLogic.reset();
+        else if(gameLogic.winningPlayer != -1){
+            gameLogic.nextRound();
         }
+        if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) &&
+                (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
+            gameLogic.reset();
+
+            }
 
         return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
     }
 
     @Override
