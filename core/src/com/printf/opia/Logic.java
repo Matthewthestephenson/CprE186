@@ -106,11 +106,11 @@ public class Logic {
         playerTurn = 0;
         //numColors++;
         gameGrid = new Grid();
-        gameQueue = new Queue();
         lastPlacedPiece = null;
         lastPlacedRow = -1;
         lastPlacedCol = -1;
         winningPlayer = -1;
+        gameQueue = new Queue();
 
         return;
     }
