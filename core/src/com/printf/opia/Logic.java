@@ -73,6 +73,19 @@ public class Logic {
         return;
     }
 
+    public void resetToBeginning(){
+        playerTurn = 0;
+        player1score = 0;
+        player2score = 0;
+        numColors = 3;
+        gameGrid = new Grid();
+        gameQueue = new Queue();
+        lastPlacedPiece = null;
+        lastPlacedRow = -1;
+        lastPlacedCol = -1;
+        winningPlayer = -1;
+    }
+
     // Returns true if the last player has just won the game
     public void checkWin(Piece piece, int row, int column){
         if(checkDown(piece, row, column)){
