@@ -1,15 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cool.com.myworkspace.AboutMenu">
 
     <TextView
         android:text="@string/about_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="Team: printf(“Team Name”); \n\nNathan Cool\nJoseph Young\nJustin Pachl\nMatthew Stephenson\n Ian Jamieson\n\nApp Name: Opia\n\nCourse: CprE 186\n\nSection: C\n\nSpring 2015 " />
 
 </RelativeLayout>
