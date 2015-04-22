@@ -7,6 +7,17 @@
     tools:context="cool.com.myworkspace.TutorialMenu">
 
     <TextView android:text="@string/tutorial_menu" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="Each player has their own shape, squares or circles.\n\nThe color of the shapes are generated at random and shown in the queue above the board.\n\nPlayers take turns placing their pieces.\n\nA player wins when they have placed 4 shapes or colors in a row.\n\nWhen a player has won, the number of available colors to choose from increases.\n\nWhen the board is filled completely, the round results in a tie. " />
 
 </RelativeLayout>
