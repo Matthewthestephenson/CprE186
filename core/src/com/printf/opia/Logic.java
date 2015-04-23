@@ -102,8 +102,9 @@ public class Logic {
     }
 
     public void nextRound(){
+        if(winningPlayer == 0){ player1score++;}else{  player2score++;}
         playerTurn = 0;
-        numColors++;
+        //numColors++;
         gameGrid = new Grid();
         gameQueue = new Queue();
         lastPlacedPiece = null;

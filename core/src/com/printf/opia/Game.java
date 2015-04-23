@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
+import java.util.Map;
 
 
 public class Game extends ApplicationAdapter implements ApplicationListener, InputProcessor {
@@ -37,10 +38,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Texture backgroundTexture;
     private Texture winOne;
     private Texture winTwo;
-    private TextureAtlas slideAtlas;
-    private TextureRegion[] slideFrames;
-    private TextureRegion currentSlide;
-    private Animation slideAnimation;
     private BitmapFont font;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
@@ -54,7 +51,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private float gridHeightRatio;
     private float gridY;
     private float gridX;
-    private float time;
     private static float GAME_HEIGHT;
     private static float GAME_WIDTH;
     protected static Logic gameLogic;
@@ -90,20 +86,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         redCircle = new Texture(Gdx.files.internal("demoImages/circleRed.png"));
         blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
         greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
-        //Load special animation TEXTURE
-        slideAtlas = new TextureAtlas(Gdx.files.internal("demoImages/transition.atlas"));
-        slideFrames = new TextureRegion[5*2];
-        slideFrames[0] = slideAtlas.findRegion("it1");
-        slideFrames[1] = slideAtlas.findRegion("it2");
-        slideFrames[2] = slideAtlas.findRegion("it3");
-        slideFrames[3] = slideAtlas.findRegion("it4");
-        slideFrames[4] = slideAtlas.findRegion("it5");
-        slideFrames[5] = slideAtlas.findRegion("it6");
-        slideFrames[6] = slideAtlas.findRegion("it7");
-        slideFrames[7] = slideAtlas.findRegion("it8");
-        slideFrames[8] = slideAtlas.findRegion("it9");
-        slideFrames[9] = slideAtlas.findRegion("it10");
-        slideAnimation = new Animation(0.08f, slideFrames);
         //FONT
         generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -119,7 +101,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         gameLogic = new Logic();
         //Input
         Gdx.input.setInputProcessor(this);
-        time = 0f;
+        Gdx.graphics.setContinuousRendering(false);
     }
 
     @Override
@@ -154,13 +136,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
             currentPiece.setY(queueY);
             currentPiece.draw(batch);
         }
-        //TEST ANIMATION
-        time += Gdx.graphics.getDeltaTime();
-        currentSlide = slideAnimation.getKeyFrame(time,true);
-       // batch.draw(currentSlide, GAME_WIDTH/2, GAME_HEIGHT/2);
+
         //Draw Score
-        font.draw(batch,"0",(float)(GAME_WIDTH*(1.0/8.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
-        font.draw(batch,"0",(float)(GAME_WIDTH*(51.0/80.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
+        font.draw(batch,"" + gameLogic.player1score,(float)(GAME_WIDTH*(1.0/8.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
+        font.draw(batch,"" + gameLogic.player2score,(float)(GAME_WIDTH*(51.0/80.0)),(float)(GAME_HEIGHT*(49.0/320.0)));
         //if Someone Won
         if(gameLogic.winningPlayer != -1) {
             if (gameLogic.winningPlayer == 0) {
@@ -174,6 +153,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                 winner.setY(GAME_HEIGHT / 4);
                 winner.draw(batch);
             }
+
         }
 
         batch.end();
@@ -243,22 +223,27 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
         int touchY = screenY;
         System.out.println(screenX + " " + screenY);
         if (decideColumn(touchX) != -1 && gameLogic.winningPlayer == -1) {
             gameLogic.checkColumn(decideColumn(screenX));
         }
-        if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) && (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
-            gameLogic.reset();
+        else if(gameLogic.winningPlayer != -1){
+            gameLogic.nextRound();
         }
+        if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) &&
+                (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
+            gameLogic.reset();
+
+            }
 
         return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
     }
 
     @Override
