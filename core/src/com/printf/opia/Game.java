@@ -100,7 +100,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         //FONT
         generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 22;
+        parameter.size = ((int)(GAME_WIDTH/18.18));
         font = generator.generateFont(parameter);
         font.setColor(Color.valueOf("ef6e6e"));
         //Setup Sprites
@@ -118,7 +118,6 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
 
     @Override
     public void render() {
-        //TODO add select animation
         int i = 0;
         int j = 0;
         Gdx.gl.glClearColor(1, 0, 0, 1);
