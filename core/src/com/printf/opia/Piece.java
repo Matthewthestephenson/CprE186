@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class Piece {
 
-    protected static enum Color{RED, BLUE, YELLOW, GREEN};
+    protected static enum Color{RED, BLUE, YELLOW, GREEN, PURPLE};
     protected static enum Shape{CIRCLE, SQUARE};
     protected Color pieceColor;
     protected Shape pieceShape;
@@ -43,6 +43,8 @@ public class Piece {
                 return Color.GREEN;
             case 4:
                 return Color.YELLOW;
+            case 5:
+                return Color.PURPLE;
         }
         return null;
     }

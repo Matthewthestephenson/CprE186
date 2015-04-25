@@ -29,12 +29,18 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     private Sprite winner;
     private Sprite currentPiece;
     private Sprite background;
+    private Sprite catS;
+    private Texture cat;
     private Texture redSquare;
     private Texture blueSquare;
     private Texture greenSquare;
+    private Texture yellowSquare;
+    private Texture purpleSquare;
     private Texture redCircle;
     private Texture blueCircle;
     private Texture greenCircle;
+    private Texture yellowCircle;
+    private Texture purpleCircle;
     private Texture backgroundTexture;
     private Texture winOne;
     private Texture winTwo;
@@ -80,12 +86,17 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         backgroundTexture = new Texture(Gdx.files.internal("demoImages/gamescreen.png"));
         winOne = new Texture(Gdx.files.internal("demoImages/player1Win.png"));
         winTwo = new Texture(Gdx.files.internal("demoImages/player2Win.png"));
-        redSquare = new Texture(Gdx.files.internal("demoImages/squareRed.png"));
+        redSquare = new Texture(Gdx.files.internal("demoImages/squareRedNew.png"));
         blueSquare = new Texture(Gdx.files.internal("demoImages/squareBlue.png"));
         greenSquare = new Texture(Gdx.files.internal("demoImages/squareGreen.png"));
+        yellowSquare = new Texture(Gdx.files.internal("demoImages/squareYellow.png"));
+        purpleSquare = new Texture(Gdx.files.internal("demoImages/squarePurple.png"));
         redCircle = new Texture(Gdx.files.internal("demoImages/circleRed.png"));
         blueCircle = new Texture(Gdx.files.internal("demoImages/circleBlue.png"));
         greenCircle = new Texture(Gdx.files.internal("demoImages/circleGreen.png"));
+        yellowCircle = new Texture(Gdx.files.internal("demoImages/circleYellow.png"));
+        purpleCircle = new Texture(Gdx.files.internal("demoImages/circlePurple.png"));
+        cat = new Texture(Gdx.files.internal(("demoImages/cat.png")));
         //FONT
         generator = new FreeTypeFontGenerator(Gdx.files.internal("demoImages/Myriad Italic.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -97,6 +108,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         background.setSize(GAME_WIDTH, GAME_HEIGHT);
         currentPiece = new Sprite();
         winner = new Sprite();
+        catS = new Sprite();
         //init logic object
         gameLogic = new Logic();
         //Input
@@ -154,8 +166,16 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                 winner.draw(batch);
             }
 
-        }
 
+
+
+        }
+        if(gameLogic.checkFull()){
+        catS = new Sprite(cat);
+        catS.setSize(GAME_WIDTH, GAME_HEIGHT / 2);
+        catS.setY(GAME_HEIGHT / 4);
+        catS.draw(batch);
+         }
         batch.end();
     }
 
@@ -172,6 +192,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                         return redSquare;
                     case GREEN:
                         return greenSquare;
+                    case PURPLE:
+                        return purpleSquare;
+                    case YELLOW:
+                        return yellowSquare;
                 }
                 break;
             case CIRCLE:
@@ -182,6 +206,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
                         return redCircle;
                     case GREEN:
                         return greenCircle;
+                    case YELLOW:
+                        return yellowCircle;
+                    case PURPLE:
+                        return purpleCircle;
                 }
                 break;
             default:
@@ -195,11 +223,16 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         redCircle.dispose();
         blueCircle.dispose();
         greenCircle.dispose();
+        yellowCircle.dispose();
+        purpleCircle.dispose();
         redSquare.dispose();
         greenSquare.dispose();
         blueSquare.dispose();
+        yellowSquare.dispose();
+        purpleSquare.dispose();
         winOne.dispose();
         winTwo.dispose();
+        cat.dispose();
         backgroundTexture.dispose();
         generator.dispose();
         font.dispose();
@@ -230,18 +263,23 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         int touchX = screenX;
         int touchY = screenY;
-        System.out.println(screenX + " " + screenY);
         if (decideColumn(touchX) != -1 && gameLogic.winningPlayer == -1) {
             gameLogic.checkColumn(decideColumn(screenX));
         }
-        else if(gameLogic.winningPlayer != -1){
+        else if(gameLogic.winningPlayer != -1) {
             gameLogic.nextRound();
+            if (gameLogic.numColors > 5) {
+                gameLogic.resetToBeginning();
+            }
+        }
+        if(gameLogic.checkFull()&& decideRow(screenY) == -1){
+            gameLogic.resetToBeginning();
         }
         if((touchX >= .58*GAME_WIDTH) &&(touchX <= .6*GAME_WIDTH) &&
                 (touchY <= .05*GAME_HEIGHT) && (touchY >= .03*GAME_HEIGHT)){
-            gameLogic.reset();
+            gameLogic.resetToBeginning();
 
-            }
+        }
 
         return true;
     }
@@ -285,7 +323,3 @@ public class Game extends ApplicationAdapter implements ApplicationListener, Inp
         return -1;
     }
 }
-
-
-
-
